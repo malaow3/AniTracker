@@ -1,0 +1,76 @@
+extends layout.pug
+block content
+
+  div.container-fluid
+    //- div.table-responsive
+    div(class="table-responsive" style="overflow-y: auto;")
+      table.table.table-dark(id="anitable" style="width: 100%;")
+        thead
+          tr
+            th(style="width: 25em") Image
+            th Series
+            th Season
+            th Episode
+            th Platform
+            th Watched
+            th Track
+            th(style="display:none;") seasonID
+            th(style="display:none;") showID
+            th(style="display:none;") watchedsorting
+
+        tbody
+          each val, index in funimationHistory
+            tr
+              //- td(style="width: 10em")
+              td(style="width: 25em")
+                img.img-fluid(src=val.image)
+              td #{val.name}
+              td #{val.season}
+              td #{val.progress}
+              td #{val.platform}
+              td #{val.watched}
+              td
+                if val.tracked
+                  button.btn.btn-light(onclick="untrack(\""+index+"|"+val.platform+"\")") Untrack
+                else
+                  button.btn.btn-light(onclick="track(\""+index+"|"+val.platform+"\")" data-bs-toggle='modal', data-bs-target='#exampleModal') Track
+              td(style="display:none;") #{val.seasonID}
+              td(style="display:none;") #{val.showID}
+              td(style="display:none;") #{val.watchedGMT}
+
+          each val, index in crunchyHistory
+            tr
+              //- td(style="width: 10em")
+              td(style="width: 25em")
+                img.img-fluid(src=val.image)
+              td #{val.name}
+              td #{val.season}
+              td #{val.progress}
+              td #{val.platform}
+              td #{val.watched}
+              td
+                if val.tracked
+                  button.btn.btn-light(onclick="untrack(\""+index+"|"+val.platform+"\")") Untrack
+                else
+                  button.btn.btn-light(onclick="track(\""+index+"|"+val.platform+"\")" data-bs-toggle='modal', data-bs-target='#exampleModal') Track
+              td(style="display:none;") #{val.seasonID}
+              td(style="display:none;") #{val.showID}
+              td(style="display:none;") #{val.watchedGMT}
+  br
+
+  #exampleModal.modal.fade(tabindex='-1', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog.modal-xl
+      .modal-content
+        .modal-header
+          h5#exampleModalLabel.modal-title Modal title
+          button.btn-close.btn-light(type='button', data-bs-dismiss='modal', aria-label='Close')
+        #modbod.modal-body
+          | ...
+        //- .modal-footer
+        //-   button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+        //- button.btn.btn-primary(type='button') Save changes
+
+  //- $('.dataTables_length').addClass('bs-select');
+
+
+  script(src="public/js/webindex.js")

@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "."
+    ],
+    "ext": "ts,js,json,pug",
+    "ignore": [
+        "node_modules",
+        "dist"
+    ],
+    "exec": "npm start"
+}

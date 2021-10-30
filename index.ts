@@ -9,12 +9,10 @@ import express = require('express');
 import morgan = require("morgan");
 import path = require('path');
 import basicAuth = require('express-basic-auth');
-var ping = require('ping');
 
 
 import { Sequelize, DataTypes, Model, ModelCtor } from 'sequelize';
 import { CrunchyAuth, crunchyLogin, getCrunchyHistory } from "./src/crunchy";
-import { execSync } from "child_process";
 
 async function getPkgJsonDir() {
     const { dirname } = require('path');
@@ -188,9 +186,13 @@ async function updateHistory() {
         }
     } catch (err) {
         log.error("Error getting history")
-        await updateCredentials()
-        log.info("Getting Funimation history")
-        funimationHistory = await getHistory(loginTokens.funimationToken);
+        try {
+            await updateCredentials()
+            log.info("Getting Funimation history")
+            funimationHistory = await getHistory(loginTokens.funimationToken);
+        } catch (err) {
+            log.error("Error updating credentials")
+        }
     }
 
     try {
@@ -200,9 +202,13 @@ async function updateHistory() {
         }
     } catch (err) {
         log.error("Error getting history")
-        await updateCredentials()
-        log.info("Getting Crunchyroll history")
-        crunchyHistory = await getCrunchyHistory(loginTokens.crunchyAuth);
+        try {
+            await updateCredentials()
+            log.info("Getting Crunchyroll history")
+            crunchyHistory = await getCrunchyHistory(loginTokens.crunchyAuth);
+        } catch (err) {
+            log.error("Error updating credentials")
+        }
     }
 
     for (let key in funimationHistory) {
@@ -339,16 +345,7 @@ async function updateCredentials() {
                 process.env.funpassword as string
             );
         } catch (err) {
-            try {
-                await ping.promise.probe("funimation.com", {
-                    timeout: 10,
-                    extra: ['-c', '1'],
-                });
-                log.error("Invalid credentials")
-                process.exit(1)
-            } catch (err) {
-                log.error("Funimation may be down right now.")
-            }
+            log.error("Unable to login, Funimation may be down right now or invalid credentials were provided.")
         }
 
     }
@@ -363,16 +360,7 @@ async function updateCredentials() {
                 process.env.crunchypassword as string
             ) as CrunchyAuth;
         } catch (err) {
-            try {
-                await ping.promise.probe("crunchyroll.com", {
-                    timeout: 10,
-                    extra: ['-c', '1'],
-                });
-                log.error("Invalid credentials")
-                process.exit(1)
-            } catch (err) {
-                log.error("Crunchyroll may be down right now.")
-            }
+            log.error("Unable to login, Crunchyroll may be down right now or invalid credentials were provided.")
         }
     }
 }

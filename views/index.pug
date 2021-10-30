@@ -19,7 +19,7 @@ block content
             th(style="display:none;") watchedsorting
 
         tbody
-          if funimationHistory != undefined && funimationHistory.length > 0
+          if funimationHistory != undefined
             each val, index in funimationHistory
               tr
                 //- td(style="width: 10em")
@@ -39,25 +39,25 @@ block content
                 td(style="display:none;") #{val.showID}
                 td(style="display:none;") #{val.watchedGMT}
 
-        if crunchyHistory != undefined && crunchyHistory.length > 0
-          each val, index in crunchyHistory
-            tr
-              //- td(style="width: 10em")
-              td(style="width: 25em")
-                img.img-fluid(src=val.image)
-              td #{val.name}
-              td #{val.season}
-              td #{val.progress}
-              td #{val.platform}
-              td #{val.watched}
-              td
-                if val.tracked
-                  button.btn.btn-light(onclick="untrack(\""+index+"|"+val.platform+"\")") Untrack
-                else
-                  button.btn.btn-light(onclick="track(\""+index+"|"+val.platform+"\")" data-bs-toggle='modal', data-bs-target='#exampleModal') Track
-              td(style="display:none;") #{val.seasonID}
-              td(style="display:none;") #{val.showID}
-              td(style="display:none;") #{val.watchedGMT}
+          if crunchyHistory != undefined
+            each val, index in crunchyHistory
+              tr
+                //- td(style="width: 10em")
+                td(style="width: 25em")
+                  img.img-fluid(src=val.image)
+                td #{val.name}
+                td #{val.season}
+                td #{val.progress}
+                td #{val.platform}
+                td #{val.watched}
+                td
+                  if val.tracked
+                    button.btn.btn-light(onclick="untrack(\""+index+"|"+val.platform+"\")") Untrack
+                  else
+                    button.btn.btn-light(onclick="track(\""+index+"|"+val.platform+"\")" data-bs-toggle='modal', data-bs-target='#exampleModal') Track
+                td(style="display:none;") #{val.seasonID}
+                td(style="display:none;") #{val.showID}
+                td(style="display:none;") #{val.watchedGMT}
   br
 
   #exampleModal.modal.fade(tabindex='-1', aria-labelledby='exampleModalLabel', aria-hidden='true')

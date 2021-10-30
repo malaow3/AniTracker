@@ -9,10 +9,11 @@ import express = require('express');
 import morgan = require("morgan");
 import path = require('path');
 import basicAuth = require('express-basic-auth');
+var ping = require('ping');
+
 
 import { Sequelize, DataTypes, Model, ModelCtor } from 'sequelize';
 import { CrunchyAuth, crunchyLogin, getCrunchyHistory } from "./src/crunchy";
-import bodyParser = require("body-parser");
 import { execSync } from "child_process";
 
 async function getPkgJsonDir() {
@@ -335,7 +336,10 @@ async function updateCredentials() {
             );
         } catch (err) {
             try {
-                execSync("ping -c 1 funimation.com")
+                await ping.promise.probe("funimation.com", {
+                    timeout: 10,
+                    extra: ['-c', '1'],
+                });
                 log.error("Invalid credentials")
                 process.exit(1)
             } catch (err) {
@@ -356,7 +360,10 @@ async function updateCredentials() {
             ) as CrunchyAuth;
         } catch (err) {
             try {
-                execSync("ping -c 1 crunchyroll.com")
+                await ping.promise.probe("crunchyroll.com", {
+                    timeout: 10,
+                    extra: ['-c', '1'],
+                });
                 log.error("Invalid credentials")
                 process.exit(1)
             } catch (err) {

@@ -182,8 +182,10 @@ main()
 
 async function updateHistory() {
     try {
-        log.info("Getting Funimation history")
-        funimationHistory = await getHistory(loginTokens.funimationToken);
+        if (process.env.funusername != undefined && process.env.funpassword != undefined && (process.env.funusername != "" && process.env.funpassword != "")) {
+            log.info("Getting Funimation history")
+            funimationHistory = await getHistory(loginTokens.funimationToken);
+        }
     } catch (err) {
         log.error("Error getting history")
         await updateCredentials()
@@ -192,8 +194,10 @@ async function updateHistory() {
     }
 
     try {
-        log.info("Getting Crunchyroll history")
-        crunchyHistory = await getCrunchyHistory(loginTokens.crunchyAuth);
+        if (process.env.crunchyusername != undefined && process.env.crunchypassword != undefined && (process.env.crunchyusername != "" && process.env.crunchypassword != "")) {
+            log.info("Getting Crunchyroll history")
+            crunchyHistory = await getCrunchyHistory(loginTokens.crunchyAuth);
+        }
     } catch (err) {
         log.error("Error getting history")
         await updateCredentials()
@@ -326,7 +330,7 @@ async function updateEpisodes(mediaID: string, progress: string, status: string)
 
 async function updateCredentials() {
     log.info("Starting Funimation Login")
-    if (process.env.funusername == "" || process.env.funpassword == "") {
+    if (process.env.funusername == undefined && process.env.funpassword == undefined && (process.env.funusername != "" || process.env.funpassword != "")) {
         log.info("Funimation username or password not set")
     } else {
         try {
@@ -350,7 +354,7 @@ async function updateCredentials() {
     }
 
     log.info("Starting Crunchyroll Login")
-    if (process.env.crunchyusername == "" || process.env.crunchypassword == "") {
+    if (process.env.crunchyusername == undefined && process.env.crunchypassword == undefined && (process.env.crunchyusername != "" || process.env.crunchypassword != "")) {
         log.info("Crunchyroll username or password not set")
     } else {
         try {

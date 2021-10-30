@@ -39,3 +39,6 @@ To host easily, please follow the instructions outlined below:
 - Since replit.com is a free service, the webpage will shut down if not being constantly pinged. To get around this, create an account on https://uptimerobot.com/ and create a new HTTP(s) monitor, where the URL is set to your replit webpage and the interval is 5 minutes.
 
 If when you run the first time it fails with "Unable to connect to DB", type `exit` into the shell, and then re-run - the environment variables may not have properly loaded.
+
+## Example images
+See the image gallery [here](https://imgur.com/a/YvAZYpz)
